@@ -138,7 +138,15 @@ private
     "/app/vendor/gsl-1/lib"
   end
 
-
+  def install_gsl
+    topic("Installing gsl")
+    bin_dir = "vendor/gsl-1"
+    FileUtils.mkdir_p bin_dir
+    Dir.chdir(bin_dir) do |dir|
+      run("curl #{GSL_VENDOR_URL} -s -o - | tar xzf -")
+    end
+  end
+  
   def binstubs_relative_paths
     [
       "bin",
@@ -920,12 +928,5 @@ params = CGI.parse(uri.query || "")
       install_bundler_in_app
     end
   end
-  def install_gsl
-    topic("Installing gsl")
-    bin_dir = "vendor/gsl-1"
-    FileUtils.mkdir_p bin_dir
-    Dir.chdir(bin_dir) do |dir|
-      run("curl #{GSL_VENDOR_URL} -s -o - | tar xzf -")
-    end
- end
+
 end
