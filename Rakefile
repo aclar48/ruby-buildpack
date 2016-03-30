@@ -5,7 +5,7 @@ $: << File.expand_path('../lib', __FILE__)
 
 S3_BUCKET_NAME  = "heroku-buildpack-ruby"
 VENDOR_URL      = "https://s3.amazonaws.com/#{S3_BUCKET_NAME}"
-GSL_VENDOR_URL   = "https://s3.amazonaws.com/gsl_bin/gsl-2.1.tgz"
+GSL_VENDOR_URL   = "ftp://ftp.gnu.org/gnu/gsl/gsl-2.1.tar.gz"
 
 def s3_tools_dir
   File.expand_path("../support/s3", __FILE__)

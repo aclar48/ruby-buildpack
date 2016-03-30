@@ -18,7 +18,7 @@ class LanguagePack::Ruby < LanguagePack::Base
   BUNDLER_GEM_PATH     = "bundler-#{BUNDLER_VERSION}"
   RBX_BASE_URL         = "https://binaries.rubini.us/heroku"
   NODE_BP_PATH         = "vendor/node/bin"
-  GSL_VENDOR_URL       = "https://s3.amazonaws.com/gsl_bin/gsl-2.1.tgz"
+  GSL_VENDOR_URL       = "ftp://ftp.gnu.org/gnu/gsl/gsl-2.1.tar.gz"
 
   # detects if this is a valid Ruby app
   # @return [Boolean] true if it's a Ruby app
@@ -146,7 +146,7 @@ private
       run("curl #{GSL_VENDOR_URL} -s -o - | tar xzf -")
     end
   end
-  
+
   def binstubs_relative_paths
     [
       "bin",
