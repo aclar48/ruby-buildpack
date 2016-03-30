@@ -18,7 +18,7 @@ class LanguagePack::Ruby < LanguagePack::Base
   BUNDLER_GEM_PATH     = "bundler-#{BUNDLER_VERSION}"
   RBX_BASE_URL         = "https://binaries.rubini.us/heroku"
   NODE_BP_PATH         = "vendor/node/bin"
-  GSL_VENDOR_URL       = "https://s3.amazonaws.com/gsl_bin/gsl-1.15.tgz"
+  GSL_VENDOR_URL       = "https://s3.amazonaws.com/gsl_bin/gsl-2.1.tgz"
 
   # detects if this is a valid Ruby app
   # @return [Boolean] true if it's a Ruby app
