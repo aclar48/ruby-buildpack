@@ -18,6 +18,7 @@ class LanguagePack::Ruby < LanguagePack::Base
   BUNDLER_GEM_PATH     = "bundler-#{BUNDLER_VERSION}"
   RBX_BASE_URL         = "https://binaries.rubini.us/heroku"
   NODE_BP_PATH         = "vendor/node/bin"
+  GSL_VENDOR_URL       = "https://s3.amazonaws.com/gsl_bin/gsl-1.15.tgz"
 
   # detects if this is a valid Ruby app
   # @return [Boolean] true if it's a Ruby app
@@ -56,7 +57,8 @@ class LanguagePack::Ruby < LanguagePack::Base
   def default_config_vars
     instrument "ruby.default_config_vars" do
       vars = {
-        "LANG" => env("LANG") || "en_US.UTF-8"
+        "LANG" => env("LANG") || "en_US.UTF-8",
+        "LD_LIBRARY_PATH" => ld_path,
       }
 
       ruby_version.jruby? ? vars.merge({
@@ -96,6 +98,9 @@ WARNING
       setup_export
       setup_profiled
       allow_git do
+        install_gsl
+        run("cp -R vendor/gsl-1 /app/vendor/gsl")
+        run("cp -R vendor/gsl-1 /app/vendor/gsl-1")
         install_bundler_in_app
         build_bundler
         post_bundler
@@ -120,6 +125,7 @@ private
     paths         = [
       ENV["PATH"],
       "bin",
+      "/app/vendor/gsl-1/bin",
       system_paths,
     ]
     paths.unshift("#{slug_vendor_jvm}/bin") if ruby_version.jruby?
@@ -127,6 +133,11 @@ private
 
     paths.join(":")
   end
+
+  def ld_path
+    "/app/vendor/gsl-1/lib"
+  end
+
 
   def binstubs_relative_paths
     [
@@ -909,4 +920,12 @@ params = CGI.parse(uri.query || "")
       install_bundler_in_app
     end
   end
+  def install_gsl
+    topic("Installing gsl")
+    bin_dir = "vendor/gsl-1"
+    FileUtils.mkdir_p bin_dir
+    Dir.chdir(bin_dir) do |dir|
+      run("curl #{GSL_VENDOR_URL} -s -o - | tar xzf -")
+    end
+ end
 end
